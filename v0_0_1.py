@@ -15,14 +15,6 @@ from PyQt5.QtCore import pyqtSignal, QObject, Qt
 
 from paho.mqtt import client as mqtt_client
 
-client_id = '2943f6c1736d450190e9abf84be97b76'
-username = ''
-password = ''
-broker = '192.168.43.97'
-port = '1883'
-topic = 'Gateway_HQYJ/Issue'
-
-
 class Ui_Form(object):
 
     def __init__(self, str_ip_camera_server, port_camera_server) -> None:
