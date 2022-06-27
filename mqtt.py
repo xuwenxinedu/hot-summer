@@ -1,8 +1,6 @@
 import paho.mqtt.client as mqtt
 import json
 
-
-
 class MQTT:
     def __init__(self):
         super().__init__()
