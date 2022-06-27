@@ -4,7 +4,7 @@ import json
 class MQTT:
     def __init__(self):
         super().__init__()
-        with open('config.json') as f:
+        with open('../config/config.json') as f:
             setting = json.load(f)
             self.broker = setting['broker']
             self.port = setting['port']
