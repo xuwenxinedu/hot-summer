@@ -14,9 +14,10 @@ import requests
 
 class Ui_Form(object):
 
-    def __init__(self, str_ip_camera_server, port_camera_server) -> None:
+    def __init__(self, str_ip_camera_server, port_camera_server, mqtt) -> None:
         self.str_ip_camera_server = str_ip_camera_server
         self.port_camera_server = port_camera_server
+        self.mqtt = mqtt
 
     def setupUi(self, Form):
         Form.setObjectName("Form")
@@ -135,10 +136,13 @@ class Ui_Form(object):
                                 np_image.shape[0], 
                                 np_image.shape[1] * 3,
                                 QtGui.QImage.Format_RGB888)
-            pix = QtGui.QPixmap(q_img).scaled(self.label.width(), 
-                                            self.label.height())
-            self.label.setPixmap(pix)
+            pix = QtGui.QPixmap(q_img).scaled(self.lbl.width(), 
+                                            self.lbl.height())
+            self.lbl.setPixmap(pix)
     
     def muti_thread_show_pic(self):
         t = Thread(target=self.show_pic)
         t.start()
+
+    def nod(self):
+        self.mqtt.pub()
