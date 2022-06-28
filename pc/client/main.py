@@ -3,8 +3,6 @@ from PyQt5.QtWidgets import QApplication, QMainWindow
 from ui.v0_0_1 import *
 
 
-
-  
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     MainWindow = QMainWindow()
