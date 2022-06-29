@@ -146,3 +146,9 @@ class Ui_Form(object):
 
     def nod(self):
         self.mqtt.pub()
+
+    def reset(self):
+        self.mqtt.reset()
+    
+    def see(self):
+        self.mqtt.see()

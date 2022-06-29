@@ -27,21 +27,13 @@ class Net(nn.Module):
         return F.log_softmax(x)
 
 def get_num(pic):
-    model = nn.Sequential(
-        nn.Conv2d(1, 6, kernel_size=5, padding=2), nn.Sigmoid(),
-        nn.AvgPool2d(kernel_size=2, stride=2),
-        nn.Conv2d(6, 16, kernel_size=5), nn.Sigmoid(),
-        nn.AvgPool2d(kernel_size=2, stride=2),
-        nn.Flatten(),
-        nn.Linear(16 * 5 * 5, 120), nn.Sigmoid(),
-        nn.Linear(120, 84), nn.Sigmoid(),
-        nn.Linear(84, 10))
-    network_state_dict = torch.load('./algorithm/net.pth', map_location=torch.device('cpu'))
+    model = Net()
+    network_state_dict = torch.load('./algorithm/model.pth', map_location=torch.device('cpu'))
     model.load_state_dict(network_state_dict)
     transform = torchvision.transforms.Compose([
-                    torchvision.transforms.ToTensor()])
-                    # torchvision.transforms.Normalize(
-                    # (0.1307,), (0.3081,))])
+                    torchvision.transforms.ToTensor(),
+                    torchvision.transforms.Normalize(
+                    (0.1307,), (0.3081,))])
     img = transform(pic).unsqueeze(0)
     model.eval()
     with torch.no_grad():
@@ -60,16 +52,16 @@ if __name__ == "__main__":
     img3 = np_image[290: 400, 170: 270]
     img4 = np_image[290: 400, 450: 540]
 
-    img1 = 255 - cv2.cvtColor(img1, cv2.COLOR_RGB2GRAY)
-    img2 = 255 - cv2.cvtColor(img2, cv2.COLOR_RGB2GRAY)
-    img3 = 255 - cv2.cvtColor(img3, cv2.COLOR_RGB2GRAY)
-    img4 = 255 - cv2.cvtColor(img4, cv2.COLOR_RGB2GRAY)
+    img1 = np.array(cv2.cvtColor(img1, cv2.COLOR_RGB2GRAY) * 255, dtype=np.uint8)
+    img2 = np.array(cv2.cvtColor(img2, cv2.COLOR_RGB2GRAY) * 255, dtype=np.uint8)
+    img3 = np.array(cv2.cvtColor(img3, cv2.COLOR_RGB2GRAY) * 255, dtype=np.uint8)
+    img4 = np.array(cv2.cvtColor(img4, cv2.COLOR_RGB2GRAY) * 255, dtype=np.uint8)
 
     # img1[(255 - img1) > 100] = 255
     # img1[img1 != 255] = 0
     # img2[(255 - img2) > 100] = 255
     # img2[img2 != 255] = 0
-    # img3[(255 - img3) > 100] = 255
+    # img3[(255 - img3) >  255
     # img3[img3 != 255] = 0
     # img4[(255 - img4) > 100] = 255
     # img4[img4 != 255] = 0
@@ -80,6 +72,5 @@ if __name__ == "__main__":
     plt.subplot(2, 2, 4), plt.imshow(img4, cmap='gray')
     plt.show()
 
-    img4 = cv2.cvtColor(img4, cv2.COLOR_RGB2GRAY)
-    img1 = cv2.resize(img4, (28, 28))
+    img1 = cv2.resize(img3, (28, 28))
     get_num(img1)

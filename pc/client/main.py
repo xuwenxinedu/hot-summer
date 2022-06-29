@@ -12,4 +12,7 @@ if __name__ == '__main__':
 
     ui.btn5.clicked.connect(ui.muti_thread_show_pic)
     ui.btn1.clicked.connect(ui.nod)
+    ui.btn2.clicked.connect(ui.reset)
+    ui.btn4.clicked.connect(ui.see)
     sys.exit(app.exec_())
+    ui.mqtt.disconnect_mqtt()

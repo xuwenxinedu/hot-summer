@@ -15,6 +15,8 @@ class MQTT:
         # MQTT设置
         client_id = '655cc02f46d44dc5b1a048e89a790ffe'
         self.client = mqtt.Client(client_id)
+        self.connect_mqtt()
+
 
 
     # 连接服务器函数
@@ -46,6 +48,25 @@ class MQTT:
             }
 
         )
-        self.connect_mqtt()
         self.client.publish(self.topic, payload)
-        self.disconnect_mqtt()
+        
+    
+    def publish(self, payload):
+        self.client.publish(self.topic, payload)
+
+    def reset(self):
+        payload = json.dumps({
+            "To_XArm":{
+                "Control_XArm_Action":"Reset"
+            }
+        })
+        self.publish(payload)
+
+    def see(self):
+        payload = json.dumps(
+            {
+                "To_XArm":"Control_XArm_Position"
+            }
+        )
+        self.publish(payload)
+
