@@ -18,6 +18,9 @@ class Ui_Form(object):
         self.str_ip_camera_server = str_ip_camera_server
         self.port_camera_server = port_camera_server
         self.mqtt = mqtt
+        self.gray = False
+        self.two_val = True
+        self.stop = False
 
     def setupUi(self, Form):
         Form.setObjectName("Form")
@@ -125,22 +128,46 @@ class Ui_Form(object):
 
 
     def show_pic(self):
-        while True:
+        while not self.stop:
             response = requests.get("http://" + self.str_ip_camera_server + ":" + str(self.port_camera_server) + "/video_feed_api")
             image_array = np.frombuffer(response.content, dtype=np.uint8)
             np_image = cv2.imdecode(image_array, 1)
 
-            np_image = cv2.cvtColor(np_image, cv2.COLOR_RGB2BGR)
-            
-            q_img = QtGui.QImage(np_image, np_image.shape[1], 
-                                np_image.shape[0], 
-                                np_image.shape[1] * 3,
-                                QtGui.QImage.Format_RGB888)
+            q_img = QtGui.QImage()
+            if self.gray:
+                np_image = cv2.cvtColor(np_image, cv2.COLOR_RGB2GRAY)
+                q_img = QtGui.QImage(np_image, np_image.shape[1], 
+                                    np_image.shape[0], 
+                                    np_image.shape[1],
+                                    QtGui.QImage.Format_Grayscale8)
+            elif self.two_val:
+                np_image = cv2.cvtColor(np_image, cv2.COLOR_RGB2GRAY)
+                ret, np_image = cv2.threshold(np_image , 175, 255, cv2.THRESH_BINARY)
+                # np_image = cv2.cvtColor(np_image, cv2.COLOR_RGB2BGR)
+                q_img = QtGui.QImage(np_image, np_image.shape[1],
+                                    np_image.shape[0],
+                                    np_image.shape[1],
+                                    QtGui.QImage.Format_Grayscale8)
+
+
+            else:
+                np_image = cv2.cvtColor(np_image, cv2.COLOR_RGB2BGR)
+                q_img = QtGui.QImage(np_image, np_image.shape[1], 
+                                    np_image.shape[0], 
+                                    np_image.shape[1] * 3,
+                                    QtGui.QImage.Format_RGB888)
+                
+                
+
             pix = QtGui.QPixmap(q_img).scaled(self.lbl.width(), 
-                                            self.lbl.height())
+                                                self.lbl.height())
             self.lbl.setPixmap(pix)
+        self.lbl.setText('video')
     
     def muti_thread_show_pic(self):
+        self.stop = False
+        self.gray = False
+        self.two_val = False
         t = Thread(target=self.show_pic)
         t.start()
 
@@ -154,12 +181,25 @@ class Ui_Form(object):
                 max_index = k
         self.mqtt.a2b(max_index + 1, 1)
 
-
-    def nod(self):
-        self.mqtt.pub()
+    def muti_thread_get_max(self):
+        t = Thread(target=self.get_max)
+        t.start()
 
     def reset(self):
         self.mqtt.reset()
     
     def see(self):
         self.mqtt.see()
+
+    def show_gray(self):
+        self.stop = False
+        self.gray = True
+        self.two_val = False
+    
+    def show_two_val(self):
+        self.stop = False
+        self.two_val = True
+        self.gray = False
+
+    def stop_video(self):
+        self.stop = True
