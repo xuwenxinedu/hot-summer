@@ -1,3 +1,4 @@
+from sre_parse import State
 import paho.mqtt.client as mqtt
 import json
 
@@ -69,4 +70,25 @@ class MQTT:
             }
         )
         self.publish(payload)
+        state = 0
+        while True:
+            if state == 1:
+                break
+            # 这里拿到他的位置 到位之后在后面获取排序
+            state = 1
+        return {0:6, 1:8, 2:4, 3:7}
+    
+    def a2b(self, a, b):
+        payload = json.dumps(
+            {
+                "To_XArm":{
+                    "Control_XArm_Grab":{
+                        "start": a,
+                        "end":b
+                    }
+                }
+            }
+        )
+        self.publish(payload)
+        
 

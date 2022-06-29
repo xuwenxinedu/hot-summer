@@ -11,8 +11,10 @@ if __name__ == '__main__':
     MainWindow.show()
 
     ui.btn5.clicked.connect(ui.muti_thread_show_pic)
-    ui.btn1.clicked.connect(ui.nod)
-    ui.btn2.clicked.connect(ui.reset)
-    ui.btn4.clicked.connect(ui.see)
+    ui.btn1.clicked.connect(ui.reset)
+    ui.btn2.clicked.connect(ui.get_max)
+    # ui.btn3.clicked.connect(ui.get_min)
+    # ui.btn4.clicked.connect(ui.sort)
+
     sys.exit(app.exec_())
     ui.mqtt.disconnect_mqtt()

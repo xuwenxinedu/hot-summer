@@ -144,6 +144,17 @@ class Ui_Form(object):
         t = Thread(target=self.show_pic)
         t.start()
 
+    def get_max(self):
+        infor = self.mqtt.see()
+        max_index = 0
+        max = 0
+        for k in infor.keys():
+            if infor[k] > max:
+                max = infor[k]
+                max_index = k
+        self.mqtt.a2b(max_index + 1, 1)
+
+
     def nod(self):
         self.mqtt.pub()
 
