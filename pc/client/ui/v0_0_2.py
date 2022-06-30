@@ -193,7 +193,7 @@ class Ui_Form(object):
         self.mqtt.reset()
     
     def see(self):
-        self.mqtt.see()
+        print(self.mqtt.see())
 
     def show_gray(self):
         self.stop = False

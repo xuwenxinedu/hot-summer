@@ -17,7 +17,7 @@ if __name__ == '__main__':
 
     ui.btn1.clicked.connect(ui.reset)
     ui.btn2.clicked.connect(ui.muti_thread_get_max)
-    ui.btn3.clicked.connect(ui.pos_see)
+    ui.btn3.clicked.connect(ui.see)
     # ui.btn3.clicked.connect(ui.get_min)
     # ui.btn4.clicked.connect(ui.sort)
 
