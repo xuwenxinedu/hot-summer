@@ -1,4 +1,3 @@
-from distutils.log import info
 from time import sleep
 import paho.mqtt.client as ph_mqtt_clt
 from paho.mqtt.client import *
@@ -79,7 +78,7 @@ class HQYJ_Mqtt_Client():
                 if msg.get('Protocol30'):
                     if 'In_Storage_No1' == msg.get('Protocol30').get('XArm_Position_Upload'):
                         break
-        time.sleep(10)
+        time.sleep(5)
         a = it.ans()
         print(a)
         return a
