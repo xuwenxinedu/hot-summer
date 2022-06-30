@@ -1,6 +1,7 @@
 from sre_parse import State
 import paho.mqtt.client as mqtt
 import json
+from algorithm import identify as it
 
 class MQTT:
     def __init__(self):
@@ -63,6 +64,14 @@ class MQTT:
         })
         self.publish(payload)
 
+    def only_see(self):
+        payload = json.dumps(
+            {
+                "To_XArm":"Control_XArm_Position"
+            }
+        )
+        self.publish(payload)
+
     def see(self):
         payload = json.dumps(
             {
@@ -76,7 +85,7 @@ class MQTT:
                 break
             # 这里拿到他的位置 到位之后在后面获取排序
             state = 1
-        return {0:6, 1:8, 2:4, 3:7}
+        return it.ans()
     
     def a2b(self, a, b):
         payload = json.dumps(

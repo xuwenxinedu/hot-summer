@@ -164,6 +164,10 @@ class Ui_Form(object):
             self.lbl.setPixmap(pix)
         self.lbl.setText('video')
     
+    def pos_see(self):
+        t = Thread(target=self.mqtt.only_see)
+        t.start()
+    
     def muti_thread_show_pic(self):
         self.stop = False
         self.gray = False
