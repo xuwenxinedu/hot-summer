@@ -5,12 +5,11 @@
 # Created by: PyQt5 UI code generator 5.9.2
 #
 # WARNING! All changes made in this file will be lost!
-
 from PyQt5 import QtCore, QtGui, QtWidgets
 from threading import Thread
 import cv2
 import numpy as np
-import requests
+import requests  
 
 class Ui_Form(object):
 
@@ -125,8 +124,6 @@ class Ui_Form(object):
         self.lbl3.setText(_translate("Form", "3"))
         self.lbl4.setText(_translate("Form", "4"))
 
-
-
     def show_pic(self):
         while not self.stop:
             response = requests.get("http://" + self.str_ip_camera_server + ":" + str(self.port_camera_server) + "/video_feed_api")
@@ -177,13 +174,9 @@ class Ui_Form(object):
 
     def get_max(self):
         infor = self.mqtt.see()
-        max_index = 0
-        max = 0
-        for k in infor.keys():
-            if infor[k] > max:
-                max = infor[k]
-                max_index = k
-        self.mqtt.a2b(max_index + 1, 1)
+        sort_infor = sorted(infor.items(), key=lambda x: x[1])
+        print(sort_infor)
+        self.mqtt.a2b(sort_infor[-1][0] + 1, 1)
 
     def muti_thread_get_max(self):
         t = Thread(target=self.get_max)
@@ -193,7 +186,16 @@ class Ui_Form(object):
         self.mqtt.reset()
     
     def see(self):
-        print(self.mqtt.see())
+        t = Thread(target=self.mqtt.see)
+        t.start()
+
+    def sort(self):
+        print('sort')
+
+    def muti_thread_sort(self):
+        t = Thread(target=self.sort)
+        t.start()
+        
 
     def show_gray(self):
         self.stop = False

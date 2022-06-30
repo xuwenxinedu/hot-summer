@@ -10,6 +10,8 @@ if __name__ == '__main__':
     ui.setupUi(MainWindow)
     MainWindow.show()
 
+    
+
     ui.btn5.clicked.connect(ui.muti_thread_show_pic)
     ui.btn6.clicked.connect(ui.show_gray)
     ui.btn7.clicked.connect(ui.show_two_val)
@@ -18,8 +20,7 @@ if __name__ == '__main__':
     ui.btn1.clicked.connect(ui.reset)
     ui.btn2.clicked.connect(ui.muti_thread_get_max)
     ui.btn3.clicked.connect(ui.see)
-    # ui.btn3.clicked.connect(ui.get_min)
-    # ui.btn4.clicked.connect(ui.sort)
+    ui.btn4.clicked.connect(ui.muti_thread_sort)
 
     
 
