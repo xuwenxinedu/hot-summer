@@ -6,6 +6,7 @@
 #
 # WARNING! All changes made in this file will be lost!
 from gettext import npgettext
+from imp import init_frozen
 import time
 from PyQt5 import QtCore, QtGui, QtWidgets
 from threading import Thread
@@ -230,8 +231,26 @@ class Ui_Form(object):
 
     def sort(self):
         infor = self.mqtt.see()
-        sort_infor = sorted(infor.items(), key=lambda x: x[1])
-        self.mqtt.sort(sort_infor)
+        infor = sorted(infor.items(), key=lambda x: x[1])
+        self.mqtt.sort(infor)
+        # from infor[0][0] to 5
+        # from infor[1][0] to 6
+        # from infor[2][0] to 7
+        # from infor[3][0] to 7
+        # infor = {0:4, 1:3, 2:3, 3:7}
+        # infor = sorted(infor.items(), key=lambda x: x[1])
+        for (a, b) in [(infor[0][0], self.lbl5), (infor[1][0], self.lbl6), (infor[2][0], self.lbl7), (infor[3][0], self.lbl8)]:
+            np_image = cv2.imread('./img/' + str(a) + '.png')
+            np_image = cv2.cvtColor(np_image, cv2.COLOR_RGB2BGR)
+            q_img = QtGui.QImage(np_image, np_image.shape[1], 
+                                        np_image.shape[0], 
+                                        np_image.shape[1] * 3,
+                                        QtGui.QImage.Format_RGB888)
+            pix = QtGui.QPixmap(q_img).scaled(b.width(), 
+                                                b.height())
+            b.setPixmap(pix)
+        for i, label in enumerate([self.lbl1, self.lbl2, self.lbl3, self.lbl4]):
+            label.setText(str(i + 1))
         print('sort')
 
     def muti_thread_sort(self):
