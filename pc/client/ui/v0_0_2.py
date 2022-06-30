@@ -5,6 +5,7 @@
 # Created by: PyQt5 UI code generator 5.9.2
 #
 # WARNING! All changes made in this file will be lost!
+from gettext import npgettext
 import time
 from PyQt5 import QtCore, QtGui, QtWidgets
 from threading import Thread
@@ -108,7 +109,7 @@ class Ui_Form(object):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
         self.btn1.setText(_translate("Form", "复位"))
-        self.btn3.setText(_translate("Form", "抓取最小值"))
+        self.btn3.setText(_translate("Form", "查看仓库"))
         self.btn2.setText(_translate("Form", "抓取最大值"))
         self.btn4.setText(_translate("Form", "排序"))
         self.lbl.setText(_translate("Form", "video"))
@@ -178,6 +179,17 @@ class Ui_Form(object):
         sort_infor = sorted(infor.items(), key=lambda x: x[1])
         print(sort_infor)
         self.mqtt.a2b(sort_infor[-1][0] + 1, 1)
+        lbls = [self.lbl1, self.lbl2, self.lbl3, self.lbl4]
+        lbls[sort_infor[-1][0]].setText(str(sort_infor[-1][0] + 1))
+        np_image = cv2.imread('./img/' + str(sort_infor[-1][0]) + '.png')
+        np_image = cv2.cvtColor(np_image, cv2.COLOR_RGB2BGR)
+        q_img = QtGui.QImage(np_image, np_image.shape[1], 
+                                    np_image.shape[0], 
+                                    np_image.shape[1] * 3,
+                                    QtGui.QImage.Format_RGB888)
+        pix = QtGui.QPixmap(q_img).scaled(self.lbl5.width(), 
+                                            self.lbl5.height())
+        self.lbl5.setPixmap(pix)
 
     def muti_thread_get_max(self):
         t = Thread(target=self.get_max)
@@ -191,10 +203,29 @@ class Ui_Form(object):
         t.start()
     
     def see(self):
-        self.mqtt.see()
-    
+        infor = self.mqtt.see()
+        # font = QtGui.QFont()
+        # font.setPointSize(80)
+        # for label in [self.lbl1, self.lbl2, self.lbl3, self.lbl4]:
+        #     label.setFont(font)
+        # print('=========see=============')
+        # self.lbl1.setText(str(infor[0]))
+        # self.lbl2.setText(str(infor[1]))
+        # self.lbl3.setText(str(infor[2]))
+        # self.lbl4.setText(str(infor[3]))
+        for i, label in enumerate([self.lbl1, self.lbl2, self.lbl3, self.lbl4]):
+            np_image = cv2.imread('./img/' + str(i) + '.png')
+            np_image = cv2.cvtColor(np_image, cv2.COLOR_RGB2BGR)
+            q_img = QtGui.QImage(np_image, np_image.shape[1], 
+                                        np_image.shape[0], 
+                                        np_image.shape[1] * 3,
+                                        QtGui.QImage.Format_RGB888)
+            pix = QtGui.QPixmap(q_img).scaled(label.width(), 
+                                                label.height())
+            label.setPixmap(pix)
+
     def muti_thread_see(self):
-        t = Thread(target=self.mqtt.see)
+        t = Thread(target=self.see)
         t.start()
 
     def sort(self):
