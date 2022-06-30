@@ -1,7 +1,9 @@
-
+from re import A
+import time
 import paho.mqtt.client as mqtt
 import json
-from pc.client.algorithm import identify as it
+# from algorithm import identify as it
+import algorithm.identify as it
 from queue import Queue
 class MQTT:
     def __init__(self):
@@ -62,22 +64,7 @@ class MQTT:
     def disconnect_mqtt(self):
         self.client.loop_stop()
         self.client.disconnect()
-
-    # 发布主题
-    def pub(self):
-
-        # payload = json.dumps(self.ui.textEdit_2.toPlainText())
-        payload = json.dumps(
-
-            {
-                "To_XArm": {
-                    "Control_XArm_Action": "Nod"
-                }
-            }
-
-        )
-        self.client.publish(self.topic_publish, payload)
-        
+       
     
     def publish(self, payload):
         self.client.publish(self.topic_publish, payload)
@@ -89,8 +76,10 @@ class MQTT:
             }
         })
         self.publish(payload)
+        print('mqtt reset')
 
     def only_see(self):
+        print('thread only see')
         payload = json.dumps(
             {
                 "To_XArm":"Control_XArm_Position"
@@ -99,19 +88,21 @@ class MQTT:
         self.publish(payload)
 
     def see(self):
-        payload = json.dumps(
-            {
-                "To_XArm":"Control_XArm_Position"
-            }
-        )
-        self.publish(payload)
+        self.only_see()
+        print('mqtt see')
         state = 0
-        while True:
-            if state == 1:
-                break
-            # 这里拿到他的位置 到位之后在后面获取排序
-            state = 1
-        return it.ans()
+        # time.sleep(5)
+        # while True:
+        #     # 这里拿到他的位置 到位之后在后面获取排序
+        #     if not self.queue_rcv_msg.empty():
+        #         msg = self.queue_rcv_msg.get()
+        #         if msg.get('Protocol30'):
+        #             if 'In_Storage_No1' == msg.get('Protocol30').get('XArm_Position_Upload'):
+        #                 break
+        #     # print(self.queue_rcv_msg.empty())
+        a = it.ans()
+        print(a)
+        return a
     
     def a2b(self, a, b):
         payload = json.dumps(
@@ -125,6 +116,7 @@ class MQTT:
             }
         )
         self.publish(payload)
+        print(f'mtqq {a} to {b}')
 
 
         

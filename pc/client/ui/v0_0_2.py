@@ -5,6 +5,7 @@
 # Created by: PyQt5 UI code generator 5.9.2
 #
 # WARNING! All changes made in this file will be lost!
+import time
 from PyQt5 import QtCore, QtGui, QtWidgets
 from threading import Thread
 import cv2
@@ -184,12 +185,22 @@ class Ui_Form(object):
 
     def reset(self):
         self.mqtt.reset()
+
+    def muti_thread_reset(self):
+        t = Thread(target=self.mqtt.reset)
+        t.start()
     
     def see(self):
+        self.mqtt.see()
+    
+    def muti_thread_see(self):
         t = Thread(target=self.mqtt.see)
         t.start()
 
     def sort(self):
+        infor = self.mqtt.see()
+        sort_infor = sorted(infor.items(), key=lambda x: x[1])
+        self.mqtt.sort(sort_infor)
         print('sort')
 
     def muti_thread_sort(self):
