@@ -27,6 +27,7 @@ class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
         Form.resize(827, 550)
+        Form.setWindowIcon(QtGui.QIcon('./img/icon.ico'))
         self.gridLayoutWidget = QtWidgets.QWidget(Form)
         self.gridLayoutWidget.setGeometry(QtCore.QRect(70, 230, 251, 81))
         self.gridLayoutWidget.setObjectName("gridLayoutWidget")
