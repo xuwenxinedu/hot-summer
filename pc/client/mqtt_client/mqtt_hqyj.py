@@ -113,6 +113,7 @@ class HQYJ_Mqtt_Client():
         self.a2b(infor[2][0] + 1, 3)
         self.wait_finished()
         self.a2b(infor[3][0] + 1, 4)
+        self.wait_finished()
 
 
     
